@@ -22,11 +22,7 @@ function App() {
   const [todos, setTodos] = useState([
     { sno: 1, title: "Workout", desc: "You have to go to the GYM" },
     { sno: 2, title: "Coding", desc: "You have to practice coding problems" },
-    {
-      sno: 3,
-      title: "Project",
-      desc: "You have to continue with our ongoing project",
-    },
+    {sno: 3,title: "Project",desc: "You have to continue with our ongoing project"},
     { sno: 4, title: "Relax", desc: "You have to go for a walk." },
   ]);
 
