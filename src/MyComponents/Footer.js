@@ -10,7 +10,7 @@ export const Footer = () => {
   };
   return (
     <footer className="bg-dark text-light py-3 " style={FooterStyle}>
-      <p className="text-center">Copyright &copy; MyTodoslsit.com</p>
+      <p className="text-center">Copyright &copy; MyTodoslist.com</p>
     </footer>
   );
 };

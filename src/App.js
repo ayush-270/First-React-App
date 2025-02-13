@@ -1,35 +1,40 @@
 import "./App.css";
-import { Header } from "./MyComponents/Header";
-import { Footer } from "./MyComponents/Footer";
+import Header from "./MyComponents/Header";
 import { Todos } from "./MyComponents/Todos";
-import { useState } from "react";
+import { Footer } from "./MyComponents/Footer";
 import { AddTodo } from "./MyComponents/AddTodo";
+import { About } from "./MyComponents/About";
+import React, { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
-  if (localStorage.getItem("todos")) {
+  let initTodo;
+  if (localStorage.getItem("todos") === null) {
+    initTodo = [];
+  } else {
+    initTodo = JSON.parse(localStorage.getItem("todos"));
   }
 
   const onDelete = (todo) => {
-    console.log("I am on delete of todo", todo);
+    console.log("I am ondelete of todo", todo);
+    // Deleting this way in react does not work
+    // let index = todos.indexOf(todo);
+    // todos.splice(index, 1);
+
     setTodos(
       todos.filter((e) => {
         return e !== todo;
       })
     );
+    console.log("deleted", todos);
     localStorage.setItem("todos", JSON.stringify(todos));
   };
 
-  const [todos, setTodos] = useState([
-    { sno: 1, title: "Workout", desc: "You have to go to the GYM" },
-    { sno: 2, title: "Coding", desc: "You have to practice coding problems" },
-    {sno: 3,title: "Project",desc: "You have to continue with our ongoing project"},
-    { sno: 4, title: "Relax", desc: "You have to go for a walk." },
-  ]);
-
   const addTodo = (title, desc) => {
+    console.log("I am adding this todo", title, desc);
     let sno;
     if (todos.length === 0) {
-      sno = 1;
+      sno = 0;
     } else {
       sno = todos[todos.length - 1].sno + 1;
     }
@@ -39,14 +44,31 @@ function App() {
       desc: desc,
     };
     setTodos([...todos, myTodo]);
-
-    localStorage.setItem("todos", JSON.stringify(todos));
+    console.log(myTodo);
   };
+
+  const [todos, setTodos] = useState(initTodo);
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
   return (
     <>
-      <Header Title="My Todos List" searchBar={true} />
-      <AddTodo addTodo={addTodo} />
-      <Todos todos={todos} onDelete={onDelete} />
+      <Header title="My Todos List" searchBar={false} />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <AddTodo addTodo={addTodo} />
+              <Todos todos={todos} onDelete={onDelete} />
+            </>
+          }
+        />
+        <Route exact path="/about">
+        <Route path="/about" element={<About />} />
+        </Route>
+      </Routes>
       <Footer />
     </>
   );
